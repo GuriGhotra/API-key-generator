@@ -200,19 +200,9 @@ docker run -p 5000:5000 countries-api
 - Webhook notifications
 - API documentation with Swagger/OpenAPI
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
 - [RestCountries.com](https://restcountries.com) for providing the country data API
 - Flask community for excellent documentation and support
 
-## Contact
-
-For questions or feedback, please open an issue on GitHub.
