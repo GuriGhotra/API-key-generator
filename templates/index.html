@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Log in Page</title>
+</head>
+<body class="bg-[#f3f3f3]">
+
+    <form action="{{ url_for('auth.login') }}" method="post" class="transform translate-y-[40%]">
+        <div class="container mx-auto text-center items-center bg-[#fff] w-[450px] rounded-lg shadow-lg font-serif p-6">
+            <h1 class="text-2xl tracking-wider text-[#4CAF50]">Countries Information </h1>
+            <p class="my-6 tracking-wide ">Enter your details</p>
+
+                <!-- Flash messages from the backend -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="flash-messages text-red-400 font-bold">
+                    {% for message in messages %}
+                        <div class="flash">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+            <div class="text-left py-6">
+                <label for="first" class="tracking-wider">Username :</label>
+                <br>
+                <input type="text" id="username" name="username" placeholder="Enter your Username" class="text-md outline-none my-2 border py-2 px-4 w-full rounded-lg" required>
+            </div>
+            <div class="text-left">
+                <label for="password" class="tracking-wider">Password :</label>
+                <br>
+                <input type="password" id="password" name="password" placeholder="Enter your Password" class="text-md outline-none my-2 border py-2 px-4 w-full rounded-lg" required>
+            </div>
+            <button type="submit" class="text-white bg-[#0C120C] my-6 p-2 rounded-lg w-1/2 tracking-wide cursor-pointer">Log in</button>
+
+            <div>
+                <a href="/signup" class="tracking-wide">Not registered? Sign Up here</a>
+            </div>
+        </div>
+    </form>
+    
+</body> 
+</html> 

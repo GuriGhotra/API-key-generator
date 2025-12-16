@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Dashboard - Countries Information</title>
+</head>
+<body class="bg-[#f3f3f3]">
+
+
+    <div class="container mx-auto p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-[#4CAF50]">Countries Information User Dashboard</h1>
+            <div>
+                <span class="mr-4">Welcome, {{ username }}!</span>
+                <a href="{{ url_for('auth.logout') }}" class="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded transition-all hover:bg-[#3e3e3e] rounded-lg">Logout</a>
+            </div>
+        </div>
+        
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-4">
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-lg {% if category == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Main API section -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+            <h2 class="text-xl font-semibold mb-4">Your API Key</h2>
+            
+            {% if api_Key %}
+        <div class="mb-4">
+            <div class="flex items-center">
+                <span class="font-mono bg-gray-100 p-3 rounded border flex-grow">{{ api_Key.api_key }}</span>
+                <button onclick="copyApiKey()" class="ml-2 bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded">
+                    Copy
+                </button>
+            </div>
+
+             <!-- Key status tracking -->
+            <p class="text-sm text-gray-600 mt-2">Generated on: {{ api_Key.created_at }}</p>
+            {% if api_Key.last_used %}
+            <p class="text-sm text-gray-600 mt-2">Last used: {{ api_Key.last_used }}</p>
+            {% else %}
+            <p class="text-sm text-gray-600 mt-2">Last Used: Never</p>
+            {% endif %}
+
+            <p class="text-sm {% if api_Key.is_active == 1 %}text-green-600{% else %}text-red-600{% endif %} font-semibold mt-1">
+                Status: {% if api_Key.is_active == 1 %}Enabled{% else %}Disabled{% endif %}
+            </p>
+        </div>
+        
+        <div class="flex space-x-4">
+            <form action="{{ url_for('api_Key.toggle_key') }}" method="post">
+                <button type="submit" class="{% if api_Key.is_active == 1 %}bg-red-500 hover:bg-red-700{% else %}bg-green-500 hover:bg-green-700{% endif %} text-white py-2 px-4 rounded">
+                    {% if api_Key.is_active == 1 %}Disable{% else %}Enable{% endif %} API Key
+                </button>
+            </form>
+        </div>
+        {% else %}
+            <p class="mb-4">No API key generated yet.</p>
+            
+            <form action="{{ url_for('api_Key.create_key') }}" method="post">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    Generate API Key
+                </button>
+            </form>
+        {% endif %}
+    </div>
+        
+
+    <script>
+        // adding copying functionality
+        function copyApiKey() {
+            const keyElement = document.querySelector('.font-mono');
+            const range = document.createRange();
+            range.selectNode(keyElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            
+            alert('API Key copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
